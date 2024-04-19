@@ -22,9 +22,7 @@ func pathHandler(w http.ResponseWriter, r *http.Request) {
 	case "/contact":
 		contactHandler(w, r)
 	default:
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprint(w, "<h1>404</h1><p>Page not found</p>")
+		http.Error(w, "Page not found", http.StatusNotFound)
 	}
 }
 
