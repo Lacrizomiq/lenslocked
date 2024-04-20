@@ -17,12 +17,12 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 
 // func pathHandler(w http.ResponseWriter, r *http.Request) {
 // 	switch r.URL.Path {
-// 	case "/":
-// 		homeHandler(w, r)
-// 	case "/contact":
-// 		contactHandler(w, r)
-// 	default:
-// 		http.Error(w, "Page not found", http.StatusNotFound)
+// 		case "/":
+// 			homeHandler(w, r)
+// 		case "/contact":
+// 			contactHandler(w, r)
+// 		default:
+// 			http.Error(w, "Page not found", http.StatusNotFound)
 // 	}
 // }
 
@@ -38,7 +38,6 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
 	}
 }
-
 
 func main() {
 	var router Router
