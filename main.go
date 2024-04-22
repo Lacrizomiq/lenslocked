@@ -35,8 +35,11 @@ func setupRoutes(r *chi.Mux) {
 
 func main() {
 	r:= chi.NewRouter()
-	r.Use(middleware.Logger)
 	setupRoutes(r)
+	r.Route("/faq", func(r chi.Router) {
+		r.Use(middleware.Logger)
+		r.Get("/{id}", faqHandler)
+	})
   fmt.Println("Starting the server on :3000...")
   http.ListenAndServe(":3000", r)
 }
