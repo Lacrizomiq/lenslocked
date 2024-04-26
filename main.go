@@ -33,7 +33,7 @@ func setupRoutes(r *chi.Mux) {
 	})
 }
 
-func main() {
+func main() {  
 	r:= chi.NewRouter()
 	setupRoutes(r)
 	r.Route("/faq", func(r chi.Router) {
