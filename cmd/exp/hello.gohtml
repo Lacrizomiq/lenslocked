@@ -1,8 +1,24 @@
-<script>
-  const user = {
-    "name": {{.Name}},
-    "bio": {{.Bio}},
-    "age": {{.Age}}
-  };
-  console.log(user)
-</script>
+<h1>{{ .Header}}</h1>
+<ul>
+  {{
+    range.Users
+  }}
+  <h1>{{.Name}} - {{.City}}</h1>
+  {{if ge .Age 30}}
+  <strong>{{.Name}} have more than 30 years old</strong>
+  {{else}}
+  <strong>{{.Name}} have less than 30 years old</strong>
+  {{
+    end
+  }}
+  <ul>
+    {{range $key, $value := .Attributes}}
+    <li>{{ $key }}: {{ $value }}</li>
+    {{
+      end
+    }}
+  </ul>
+  {{
+    end
+  }}
+</ul>

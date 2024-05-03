@@ -41,8 +41,8 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 
 func faqHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	id := chi.URLParam(r, "id")
-	fmt.Fprintf(w, "<h1>FAQ Pages %s</h1>", id)
+	tplPath := filepath.Join("templates", "faq.gohtml")
+	executeTemplate(w, tplPath)
 }
 
 func setupRoutes(r *chi.Mux) {
