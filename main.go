@@ -11,17 +11,17 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-func executeTemplate (w http.ResponseWriter, tplPath string) {
+func executeTemplate(w http.ResponseWriter, tplPath string) {
 	tpl, err := template.ParseFiles(tplPath)
 	if err != nil {
 		log.Printf("parsing template: %v", err)
-		http.Error(w, "There was an error parsing the template", http.StatusInternalServerError )
+		http.Error(w, "There was an error parsing the template", http.StatusInternalServerError)
 		return
 	}
 	err = tpl.Execute(w, nil)
 	if err != nil {
 		log.Printf("parsing template: %v", err)
-		http.Error(w, "There was an error parsing the template", http.StatusInternalServerError )
+		http.Error(w, "There was an error parsing the template", http.StatusInternalServerError)
 		return
 	}
 }
@@ -35,7 +35,6 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 func contactHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	tplPath := filepath.Join("templates", "contact.gohtml")
-
 	executeTemplate(w, tplPath)
 }
 
@@ -54,13 +53,13 @@ func setupRoutes(r *chi.Mux) {
 	})
 }
 
-func main() {  
-	r:= chi.NewRouter()
+func main() {
+	r := chi.NewRouter()
 	setupRoutes(r)
 	r.Route("/faq", func(r chi.Router) {
 		r.Use(middleware.Logger)
 		r.Get("/{id}", faqHandler)
 	})
-  fmt.Println("Starting the server on :3000...")
-  http.ListenAndServe(":3000", r)
+	fmt.Println("Starting the server on :3000...")
+	http.ListenAndServe(":3000", r)
 }
