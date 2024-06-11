@@ -10,6 +10,7 @@ import (
 	"github.com/joncalhoun/lenslocked/views"
 )
 
+// main is the entry point for the program
 func main() {
 	r := chi.NewRouter()
 
