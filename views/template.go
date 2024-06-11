@@ -19,8 +19,8 @@ func Must(t Template, err error) Template {
 
 // ParseFS parses the provided patterns from the provided fs.FS and returns a Template.
 // If there is an error parsing the template, an error is returned.
-func ParseFS(fs fs.FS, patterns ...string) (Template, error) {
-	htmlTpl, err := template.ParseFS(fs, patterns...)
+func ParseFS(fs fs.FS, pattern ...string) (Template, error) {
+	htmlTpl, err := template.ParseFS(fs, pattern...)
 	if err != nil {
 		return Template{}, fmt.Errorf("parsing template: %w", err)
 	}

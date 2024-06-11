@@ -10,7 +10,6 @@ import (
 	"github.com/joncalhoun/lenslocked/views"
 )
 
-// main is the entry point for the program
 func main() {
 	r := chi.NewRouter()
 
@@ -20,9 +19,6 @@ func main() {
 		views.Must(views.ParseFS(templates.FS, "contact.gohtml"))))
 	r.Get("/faq", controllers.StaticHandler(
 		views.Must(views.ParseFS(templates.FS, "faq.gohtml"))))
-
-	r.Get("/aboutus", controllers.StaticHandler(
-		views.Must(views.ParseFS(templates.FS, "aboutus.gohtml"))))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
