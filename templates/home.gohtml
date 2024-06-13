@@ -1,22 +1,12 @@
+{{ template "header" .}}
 <h1>Welcome to my awesome site !</h1>
 
 <nav>
-  <ul>
+  <ul class="p-4">
     <li><a href="/contact">Contact page</a></li>
     <li><a href="/faq">FAQ page</a></li>
     <li><a href="/aboutus">About us page</a></li>
   </ul>
 </nav>
 
-{{ template "lorem-ipsum" }}
-{{ template "lorem-ipsum" }}
-{{ template "lorem-ipsum" }}
-{{ template "lorem-ipsum" }}
-
-{{ define "lorem-ipsum" }}
-<p>
-  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquam, est
-  voluptatibus? Neque ipsam, blanditiis fugit quam animi nam minus tenetur, amet
-  laborum velit perspiciatis aperiam nihil odio cum quis quaerat!
-</p>
-{{ end }}
+{{ template "footer" .}}

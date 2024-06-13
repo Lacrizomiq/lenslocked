@@ -1,0 +1,22 @@
+{{ define "header" }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <title>Lenslocked</title>
+  </head>
+  <body class="flex flex-col">
+    {{ end }}
+
+    {{ define "footer" }}
+    <footer class="bg-gray-800 text-white text-center text-xs p-3">
+      <p>&copy; Lenslocked</p>
+    </footer>
+  </body>
+</html>
+{{ end }}

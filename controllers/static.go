@@ -42,6 +42,10 @@ func FAQ(tpl views.Template) http.HandlerFunc {
 			Answer:   "To upload a photo, you must first create an account. Once you have an account, click the 'Upload' link in the top right corner of the page and follow the instructions.",
 		},
 		{
+			Question: "How do I delete a photo?",
+			Answer:   "To delete a photo, you must first be logged in. Once you are logged in, navigate to the photo you want to delete and click the 'Delete' button.",
+		},
+		{
 			Question: "How do I contact support?",
 			Answer:   `Email us - <a href="mailto:support@lenslocked.com">support@lenslocked.com</a>`,
 		},
