@@ -1,6 +1,6 @@
-{{ define "header" }}
+{{define "header"}}
 <!DOCTYPE html>
-<html>
+<html class="h-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,12 +10,48 @@
     />
     <title>Lenslocked</title>
   </head>
-  <body class="flex flex-col">
+  <body class="flex flex-col min-h-screen bg-gray-100">
+    <header class="bg-gradient-to-r from-blue-800 to-indigo-800 text-white">
+      <nav class="px-8 py-6 flex items-center space-x-12">
+        <div class="text-4xl font-serif">Lenslocked</div>
+        <div class="flex-grow">
+          <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/">
+            Home
+          </a>
+          <a
+            class="text-lg font-semibold hover:text-blue-100 pr-8"
+            href="/contact"
+          >
+            Contact
+          </a>
+          <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/faq">
+            FAQ
+          </a>
+        </div>
+        <div class="space-x-4">
+          <a class="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded" href="#"
+            >Sign in</a
+          >
+          <a
+            href="/signup"
+            class="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded"
+          >
+            Sign up
+          </a>
+        </div>
+      </nav>
+    </header>
     {{ end }}
 
     {{ define "footer" }}
-    <footer class="bg-gray-800 text-white text-center text-xs p-3">
-      <p>&copy; Lenslocked</p>
+    <footer class="bg-gradient-to-r from-blue-800 to-indigo-800 text-white">
+      <div class="px-8 py-6 flex justify-between">
+        <div class="text-lg font-semibold">Copyright Ludovic, 2024</div>
+        <div class="space-x-4">
+          <a href="/">Home</a>
+          <a href="/contact">Contact</a>
+        </div>
+      </div>
     </footer>
   </body>
 </html>
