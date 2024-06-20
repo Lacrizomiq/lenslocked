@@ -14,7 +14,11 @@ type Users struct {
 
 // New is used to render the signup form when a user visits /signup
 func (u Users) New(w http.ResponseWriter, r *http.Request) {
-	u.Templates.New.Execute(w, nil)
+	var data struct {
+		Email string
+	}
+	data.Email = r.FormValue("email")
+	u.Templates.New.Execute(w, data)
 }
 
 // Create is used to process the signup form when a user submits it.
