@@ -34,6 +34,45 @@ More data type : https://www.postgresql.org/docs/current/static/datatype.html
 ## Inserting Records
 
 ```sql
-NSERT INTO users (age, email, first_name, last_name)
+INSERT INTO users (age, email, first_name, last_name)
 VALUES (28, 'jane@smith.com', 'Jane', 'Smith');
 ```
+
+## Filtering Queries
+
+```sql
+SELECT * FROM users WHERE age=22;
+```
+
+```sql
+SELECT email, id FROM users;
+```
+
+## Updating Records
+
+```sql
+UPDATE users
+SET first_name = 'Johnny', last_name = 'Appleseed'
+WHERE id = 1;
+```
+
+```sql
+UPDATE users
+SET first_name = 'Anonymous', last_name = 'Teenager'
+WHERE age < 20 AND age > 12;
+```
+
+## Deleting Records
+
+```sql
+DELETE FROM users
+WHERE id = 1;
+```
+
+## Additional SQL Resources
+
+https://selectstarsql.com/
+
+https://mystery.knightlab.com/
+
+https://www.codecademy.com/learn/learn-sql

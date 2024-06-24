@@ -15,5 +15,5 @@ docker compose down
 ## Open psql CLI in Docker
 
 ```shell
-docker compose exec -it db psql -U baloo -d lenslocked
+docker exec -it lenslocked-db-1 /usr/bin/psql -U baloo -d lenslocked
 ```
