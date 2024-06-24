@@ -2,11 +2,15 @@
 
 ## Make docker work
 
+Create and start containers
+
 ```shell
 docker compose up
 ```
 
-## Close Docker
+## Remove containers
+
+Stop and remove containers, networks
 
 ```shell
 docker compose down
