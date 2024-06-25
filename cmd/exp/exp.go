@@ -75,12 +75,14 @@ func main() {
 	// Insert some data into the users table.
 	name := "Johnny Halliday"
 	email := "johnny@hallyday.com"
-	_, err = db.Exec(`
+	row := db.QueryRow(`
 		INSERT INTO users (name, email)
-		VALUES ($1, $2);
+		VALUES ($1, $2) RETURNING id;
 	`, name, email)
+	var id int
+	err = row.Scan(&id) // Scan the id of the inserted row. &id is a pointer to the id variable. It is used to store the value of the id column in the database.
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Data inserted successfully!")
+	fmt.Println("User created. id = ", id)
 }
