@@ -73,16 +73,33 @@ func main() {
 	fmt.Println("Tables created successfully!")
 
 	// Insert some data into the users table.
-	name := "Johnny Halliday"
-	email := "johnny@hallyday.com"
+	// name := "Johnny Halliday"
+	// email := "johnny@hallyday.com"
+	// row := db.QueryRow(`
+	// 	INSERT INTO users (name, email)
+	// 	VALUES ($1, $2) RETURNING id;
+	// `, name, email)
+	// var id int
+	// err = row.Scan(&id) // Scan the id of the inserted row. &id is a pointer to the id variable. It is used to store the value of the id column in the database.
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println("User created. id = ", id)
+
+	// Query a single user from the users table.
+	id := 3
 	row := db.QueryRow(`
-		INSERT INTO users (name, email)
-		VALUES ($1, $2) RETURNING id;
-	`, name, email)
-	var id int
-	err = row.Scan(&id) // Scan the id of the inserted row. &id is a pointer to the id variable. It is used to store the value of the id column in the database.
+	SELECT name, email
+	FROM users
+	WHERE id = $1;
+	`, id)
+	var name, email string
+	err = row.Scan(&name, &email)
+	if err == sql.ErrNoRows {
+		fmt.Println("Error, no rows found !")
+	}
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("User created. id = ", id)
+	fmt.Printf("User information: name = %s, email = %s\n", name, email)
 }
