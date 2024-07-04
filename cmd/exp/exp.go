@@ -1,154 +1,31 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 
-	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/joncalhoun/lenslocked/models"
 )
 
-// PostgresConfig is a struct that holds the configuration for a Postgres database.
-// This can be used to connect to the database.
-type PostgresConfig struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	Database string
-	SSLMode  string
-}
-
-// String returns the connection string for the PostgresConfig.
-// This can be used to connect to the database.
-func (cfg PostgresConfig) String() string {
-	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.Database, cfg.SSLMode)
-}
-
-// main is the entry point for the application.
 func main() {
-	// Create a new PostgresConfig struct and set the fields.
-	cfg := PostgresConfig{
-		Host:     "localhost",
-		Port:     "5432",
-		User:     "baloo",
-		Password: "junglebook",
-		Database: "lenslocked",
-		SSLMode:  "disable",
-	}
-
-	// Open a new database connection using the pgx driver.
-	db, err := sql.Open("pgx", cfg.String())
+	cfg := models.DefaultPostgresConfig()
+	db, err := models.Open(cfg)
 	if err != nil {
 		panic(err)
 	}
-
-	// Defer the closing of the database connection.
 	defer db.Close()
 
-	// Check if the connection to the database is successful.
 	err = db.Ping()
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Connected!")
 
-	// Create a new table in the database.
-	_, err = db.Exec(`
-		CREATE TABLE IF NOT EXISTS users (
-			id SERIAL PRIMARY KEY,
-			name TEXT,
-			email TEXT UNIQUE NOT NULL
-		);
-		
-		CREATE TABLE IF NOT EXISTS orders (
-			id SERIAL PRIMARY KEY,
-			user_id INT NOT NULL,
-			amount INT,
-			description TEXT,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-			);
-	`)
+	us := models.UserService{
+		DB: db,
+	}
+	user, err := us.Create("bob4@bob.com", "bob123")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Tables created successfully!")
-
-	// Insert some data into the users table.
-	// name := "Johnny Halliday"
-	// email := "johnny@hallyday.com"
-	// row := db.QueryRow(`
-	// 	INSERT INTO users (name, email)
-	// 	VALUES ($1, $2) RETURNING id;
-	// `, name, email)
-	// var id int
-	// err = row.Scan(&id) // Scan the id of the inserted row. &id is a pointer to the id variable. It is used to store the value of the id column in the database.
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Println("User created. id = ", id)
-
-	// Query a single user from the users table.
-	id := 1
-	row := db.QueryRow(`
-	SELECT name, email
-	FROM users
-	WHERE id = $1;
-	`, id)
-	var name, email string
-	err = row.Scan(&name, &email)
-	if err == sql.ErrNoRows {
-		fmt.Println("Error, no rows found !")
-	}
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("User information: name = %s, email = %s\n", name, email)
-
-	// Insert some data into the orders table.
-	// userID := 1
-	// for i := 1; i <= 5; i++ {
-	// 	amount := i * 100
-	// 	description := fmt.Sprintf("Fake order #%d", i)
-	// 	_, err := db.Exec(`
-	// 		INSERT INTO orders (user_id, amount, description)
-	// 		VALUES ($1, $2, $3);
-	// 	`, userID, amount, description)
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// }
-	// fmt.Println("Orders created successfully!")
-
-	// Query multiple records
-	type Order struct {
-		ID          int
-		UserID      int
-		Amount      int
-		Description string
-	}
-
-	var orders []Order
-	userID := 1
-	rows, err := db.Query(`
-	SELECT id, amount, description
-	FROM orders
-	WHERE user_id = $1;
-	`, userID)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var order Order
-		order.UserID = userID
-		err := rows.Scan(&order.ID, &order.Amount, &order.Description)
-		if err != nil {
-			panic(err)
-		}
-		orders = append(orders, order)
-	}
-	err = rows.Err()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Orders:", orders)
+	fmt.Println(user)
 }

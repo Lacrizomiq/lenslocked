@@ -3,16 +3,17 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/joncalhoun/lenslocked/models"
 )
 
-// Users is used to handle the signup process.
 type Users struct {
 	Templates struct {
 		New Template
 	}
+	UserService *models.UserService
 }
 
-// New is used to render the signup form when a user visits /signup
 func (u Users) New(w http.ResponseWriter, r *http.Request) {
 	var data struct {
 		Email string
@@ -21,10 +22,14 @@ func (u Users) New(w http.ResponseWriter, r *http.Request) {
 	u.Templates.New.Execute(w, data)
 }
 
-// Create is used to process the signup form when a user submits it.
 func (u Users) Create(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Email:", r.FormValue("email"))
-	fmt.Fprint(w, "Password:", r.FormValue("password"))
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+	user, err := u.UserService.Create(email, password)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Something went wrong.", http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, "User created: %+v", user)
 }
-
-// I can use Gorrila Schema to validate the form data, here just show the basic usage of form data with standard library

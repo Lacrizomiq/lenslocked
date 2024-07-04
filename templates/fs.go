@@ -2,7 +2,5 @@ package templates
 
 import "embed"
 
-// FS is the embed.FS that contains the templates.
-
-//go:embed *.gohtml
+//go:embed *
 var FS embed.FS
