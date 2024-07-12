@@ -20,26 +20,37 @@ func Must(t Template, err error) Template {
 // ParseFS parses the provided patterns from the provided fs.FS and returns a Template.
 // If there is an error parsing the template, an error is returned.
 func ParseFS(fs fs.FS, pattern ...string) (Template, error) {
-	htmlTpl, err := template.ParseFS(fs, pattern...)
+	// Create a new template and add a function to generate a CSRF field.
+	// This is a contrived example to show how to add functions to templates.
+	tpl := template.New(pattern[0])
+	tpl = tpl.Funcs(
+		template.FuncMap{
+			"csrfField": func() template.HTML {
+				return `<input type="hidden" />`
+			},
+		},
+	)
+
+	tpl, err := tpl.ParseFS(fs, pattern...)
 	if err != nil {
 		return Template{}, fmt.Errorf("parsing template: %w", err)
 	}
 	return Template{
-		htmlTpl: htmlTpl,
+		htmlTpl: tpl,
 	}, nil
 }
 
 // Parse parses the provided file and returns a Template.
 // If there is an error parsing the template, an error is returned.
-func Parse(filepath string) (Template, error) {
-	htmlTpl, err := template.ParseFiles(filepath)
-	if err != nil {
-		return Template{}, fmt.Errorf("parsing template: %w", err)
-	}
-	return Template{
-		htmlTpl: htmlTpl,
-	}, nil
-}
+// func Parse(filepath string) (Template, error) {
+// 	htmlTpl, err := template.ParseFiles(filepath)
+// 	if err != nil {
+// 		return Template{}, fmt.Errorf("parsing template: %w", err)
+// 	}
+// 	return Template{
+// 		htmlTpl: htmlTpl,
+// 	}, nil
+// }
 
 // Template is a wrapper around html/template to provide additional helper methods.
 type Template struct {
