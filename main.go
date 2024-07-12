@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/gorilla/csrf"
 	"github.com/joncalhoun/lenslocked/controllers"
 	"github.com/joncalhoun/lenslocked/models"
 	"github.com/joncalhoun/lenslocked/templates"
@@ -55,5 +56,7 @@ func main() {
 		http.Error(w, "Page not found", http.StatusNotFound)
 	})
 	fmt.Println("Starting the server on :3000...")
-	http.ListenAndServe(":3000", r)
+	csrfKey := "32-byte-long-auth-key"
+	csrfMiddleware := csrf.Protect([]byte(csrfKey), csrf.Secure(false))
+	http.ListenAndServe(":3000", csrfMiddleware(r))
 }
