@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/gorilla/csrf"
@@ -12,8 +13,19 @@ import (
 	"github.com/joncalhoun/lenslocked/views"
 )
 
+func LoggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		fmt.Printf("Request: %s %s %s\n", r.RemoteAddr, r.Method, r.URL)
+		next.ServeHTTP(w, r)
+		fmt.Printf("Request processed in %s\n", time.Since(start))
+	})
+}
+
 func main() {
 	r := chi.NewRouter()
+
+	r.Use(LoggingMiddleware)
 
 	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(
 		templates.FS,

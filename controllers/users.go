@@ -63,7 +63,14 @@ func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request) {
 		Path:     "/", // This is the path that the cookie is valid for
 		HttpOnly: true,
 	}
+	devCookie := http.Cookie{
+		Name:     "dev",
+		Value:    "true",
+		Path:     "/",
+		HttpOnly: true,
+	}
 	http.SetCookie(w, &cookie)
+	http.SetCookie(w, &devCookie)
 
 	fmt.Fprintf(w, "User authenticated: %+v", user)
 
