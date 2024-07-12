@@ -59,7 +59,7 @@ type Template struct {
 
 // Execute executes the template, writing the output to w.
 // If there is an error executing the template, an error is logged and an http.Error is written to w.
-func (t Template) Execute(w http.ResponseWriter, data interface{}) {
+func (t Template) Execute(w http.ResponseWriter, r *http.Request, data interface{}) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	err := t.htmlTpl.Execute(w, data)
 	if err != nil {
