@@ -12,8 +12,8 @@ type Users struct {
 		New    Template
 		SignIn Template
 	}
-	UserService   *models.UserService
-	SessionSerice *models.SessionService
+	UserService    *models.UserService
+	SessionService *models.SessionService
 }
 
 func (u Users) New(w http.ResponseWriter, r *http.Request) {
@@ -34,20 +34,15 @@ func (u Users) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Something went wrong.", http.StatusInternalServerError)
 		return
 	}
-	session, err := u.SessionSerice.Create(user.ID)
+	session, err := u.SessionService.Create(user.ID)
 	if err != nil {
 		fmt.Println(err)
 		// Todo : Handle error about not being able to log the user in
 		http.Redirect(w, r, "signin", http.StatusFound)
 		return
 	}
-	cookie := http.Cookie{
-		Name:     "session",
-		Value:    session.Token,
-		Path:     "/",
-		HttpOnly: true,
-	}
-	http.SetCookie(w, &cookie)
+
+	setCookie(w, CookieSession, session.Token)
 	http.Redirect(w, r, "/users/me", http.StatusFound)
 }
 
@@ -72,33 +67,26 @@ func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Something went wrong.", http.StatusInternalServerError)
 		return
 	}
-	session, err := u.SessionSerice.Create(user.ID)
+	session, err := u.SessionService.Create(user.ID)
 	if err != nil {
 		fmt.Println(err)
-
+		// Todo : Handle error about not being able to log the user in
 		http.Redirect(w, r, "signin", http.StatusFound)
 		return
 	}
 
-	cookie := http.Cookie{
-		Name:     "session",
-		Value:    session.Token,
-		Path:     "/", // This is the path that the cookie is valid for
-		HttpOnly: true,
-	}
-
-	http.SetCookie(w, &cookie)
+	setCookie(w, CookieSession, session.Token)
 	http.Redirect(w, r, "/users/me", http.StatusFound)
 }
 
 func (u Users) CurrentUser(w http.ResponseWriter, r *http.Request) {
-	tokenCookie, err := r.Cookie("session")
+	token, err := readCookie(r, CookieSession)
 	if err != nil {
 		fmt.Println(err)
 		http.Redirect(w, r, "/signin", http.StatusFound)
 		return
 	}
-	user, err := u.SessionSerice.User(tokenCookie.Value)
+	user, err := u.SessionService.User(token)
 	if err != nil {
 		fmt.Println(err)
 		http.Redirect(w, r, "/signin", http.StatusFound)
